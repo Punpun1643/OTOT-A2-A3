@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: punpun1643/otota1:latest
+          ports:
+            - name: http
+              containerPort: 8080
+          resources:
+            limits:
+              cpu: 40m
+              memory: 100Mi
+            
