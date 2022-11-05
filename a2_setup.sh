@@ -5,7 +5,9 @@ kind create cluster --name kind-1 --config k8s/kind/cluster-config.yaml
 
 # Create deployment
 kubectl apply -f k8s/manifests/k8s/backend-deployment.yaml
-kubectl wait --for=condition=ready pod -l app=backend --timeout=300s
+kubectl wait --for=condition=ready pod -l app=backend --timeout=500s
+
+sleep 5m
 
 # Create service
 kubectl apply -f k8s/manifests/k8s/backend-service.yaml
@@ -17,10 +19,13 @@ kubectl label node kind-1-worker3 ingress-ready=true
 
 # Create ingress controller
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
-kubectl wait -n ingress-nginx --for=condition=ready pod -l app.kubernetes.io/component=controller --timeout=1000s
-
+kubectl wait -n ingress-nginx --for=condition=ready pod -l app.kubernetes.io/component=controller --timeout=500s
 
 sleep 3m
 
 # Create ingress
 kubectl apply -f k8s/manifests/k8s/backend-ingress.yaml
+
+# result
+# kubectl describe ingress backend
+# kubectl port-forward svc/backend 8080:8080
